@@ -68,6 +68,7 @@ dujiao-next-one-click/
 如果你只是想先跑起来，直接执行：
 
 ```bash
+git clone https://github.com/slobys/dujiao-next-one-click.git
 cd dujiao-next-one-click
 chmod +x install.sh update.sh uninstall.sh backup.sh check-updates.sh menu.sh
 sudo ./install.sh
@@ -76,10 +77,25 @@ sudo ./install.sh
 或者使用菜单：
 
 ```bash
+git clone https://github.com/slobys/dujiao-next-one-click.git
+cd dujiao-next-one-click
+chmod +x install.sh update.sh uninstall.sh backup.sh check-updates.sh menu.sh
 sudo ./menu.sh
 ```
 
 ## 脚本说明
+
+### 0. 先获取项目文件
+
+如果你的服务器上还没有这个项目目录，先执行：
+
+```bash
+git clone https://github.com/slobys/dujiao-next-one-click.git
+cd dujiao-next-one-click
+```
+
+然后再执行安装、升级、备份、卸载等脚本。
+
 
 ### 1. 安装
 
