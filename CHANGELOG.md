@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - `install.sh` 现在会在检测到 `ufw` 时自动放行 `22/tcp`、`80/tcp`、`443/tcp`，避免 HTTPS 申请因本机防火墙拦截而失败
+- `install.sh` 现在也会兼容 `firewalld`，自动放行 `ssh`、`http`、`https`
+- 对 `nftables` 和 `iptables` 环境改为输出明确提示，避免脚本粗暴修改已有规则
 - README 补充防火墙和云安全组说明，明确脚本不会直接关闭防火墙
 
 ## [0.1.0] - 2026-04-20

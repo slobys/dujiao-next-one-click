@@ -180,23 +180,52 @@ install_nginx_if_needed() {
 configure_firewall() {
   section "配置防火墙规则"
 
-  if ! command -v ufw >/dev/null 2>&1; then
-    yellow "未检测到 ufw，跳过防火墙配置，请自行确认云防火墙 / 安全组已放行 80 和 443"
+  if command -v ufw >/dev/null 2>&1; then
+    ufw allow 22/tcp >/dev/null 2>&1 || true
+    ufw allow 80/tcp >/dev/null 2>&1 || true
+    ufw allow 443/tcp >/dev/null 2>&1 || true
+
+    if ufw status 2>/dev/null | grep -q "Status: active"; then
+      ufw reload >/dev/null 2>&1 || true
+      green "已为活动中的 ufw 放行 22、80、443 端口"
+    else
+      green "已写入 ufw 规则 22、80、443（当前 ufw 未启用，若后续启用会自动生效）"
+    fi
+
+    yellow "请同时确认云厂商安全组 / 云防火墙已放行 80 和 443"
     return
   fi
 
-  ufw allow 22/tcp >/dev/null 2>&1 || true
-  ufw allow 80/tcp >/dev/null 2>&1 || true
-  ufw allow 443/tcp >/dev/null 2>&1 || true
+  if command -v firewall-cmd >/dev/null 2>&1; then
+    firewall-cmd --permanent --add-service=ssh >/dev/null 2>&1 || true
+    firewall-cmd --permanent --add-service=http >/dev/null 2>&1 || true
+    firewall-cmd --permanent --add-service=https >/dev/null 2>&1 || true
 
-  if ufw status 2>/dev/null | grep -q "Status: active"; then
-    ufw reload >/dev/null 2>&1 || true
-    green "已为活动中的 ufw 放行 22、80、443 端口"
-  else
-    green "已写入 ufw 规则 22、80、443（当前 ufw 未启用，若后续启用会自动生效）"
+    if systemctl is-active --quiet firewalld; then
+      firewall-cmd --reload >/dev/null 2>&1 || true
+      green "已为活动中的 firewalld 放行 ssh、http、https"
+    else
+      green "已写入 firewalld 永久规则 ssh、http、https（当前 firewalld 未运行）"
+    fi
+
+    yellow "请同时确认云厂商安全组 / 云防火墙已放行 80 和 443"
+    return
   fi
 
-  yellow "请同时确认云厂商安全组 / 云防火墙已放行 80 和 443"
+  if command -v nft >/dev/null 2>&1 && systemctl is-active --quiet nftables; then
+    yellow "检测到 nftables 在运行，脚本暂不自动改 nft 规则，请手动放行 22、80、443"
+    yellow "示例: nft add rule inet filter input tcp dport {22,80,443} accept"
+    yellow "同时请确认云厂商安全组 / 云防火墙已放行 80 和 443"
+    return
+  fi
+
+  if command -v iptables >/dev/null 2>&1; then
+    yellow "检测到 iptables 环境，脚本暂不直接改现有 iptables 规则，以免误伤已有策略"
+    yellow "请手动放行 22、80、443，并确认云厂商安全组 / 云防火墙已放行 80 和 443"
+    return
+  fi
+
+  yellow "未检测到受支持的主机防火墙工具，请自行确认本机和云防火墙已放行 80 和 443"
 }
 
 create_dirs() {
