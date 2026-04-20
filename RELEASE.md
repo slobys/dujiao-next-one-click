@@ -2,31 +2,37 @@
 
 ## v0.1.0
 
-这是 `dujiao-next-one-click` 的首个可交付版本。
+这是 `dujiao-next-one-click` 的首个可交付版本，目标是把 Dujiao-Next 的部署流程整理成一套更适合长期维护和公开分享的一键安装脚本。
 
-### 包含内容
+### 本版已支持
 
-- Dujiao-Next 一键安装脚本
-- Docker / Docker Compose 自动安装
-- Nginx 自动安装与反代配置
-- `.env`、`config.yml`、`docker-compose.yml` 自动生成
-- 容器启动与基础部署
-- 可选 HTTPS 证书申请
-- 系统资源与端口预检
+- 一键安装 Docker / Docker Compose
+- 一键安装并启用 Nginx
+- 自动创建 `/opt/dujiao-next` 目录结构
+- 自动生成 `.env`、`config/config.yml`、`docker-compose.yml`
+- 自动启动 `redis`、`postgres`、`api`、`user`、`admin`
+- 自动写入 Nginx 反向代理配置
+- 可选申请 HTTPS 证书
+- 系统、内存、磁盘、端口预检
 - 升级、备份、卸载、版本检查、菜单脚本
 
-### 当前定位
+### 适用环境
 
-这版重点是先把项目做成：
+- Ubuntu 22.04+
+- Debian 12+
+- 建议 2C2G
+- 至少两个子域名
 
-- 结构清晰
-- 能直接跑
-- 能继续维护
-- 能公开发布
+### 快速开始
 
-### 后续方向
+```bash
+chmod +x install.sh update.sh uninstall.sh backup.sh check-updates.sh menu.sh
+sudo ./install.sh
+```
+
+### 后续计划
 
 - PostgreSQL 逻辑备份
-- 更稳的健康检查等待
-- 失败诊断和回滚能力
-- 更完善的 GitHub Actions / 发布流程
+- 健康检查等待与失败诊断
+- 回滚脚本
+- 自动发布流程

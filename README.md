@@ -149,6 +149,11 @@ dujiao-next-one-click
 v0.1.0
 ```
 
+GitHub 发布可直接参考：
+
+- `RELEASE.md`
+- `docs/github-release-assets.md`
+
 ## 当前版本打磨内容
 
 相比最初草案，这一版已经补上：
