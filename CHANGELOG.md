@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - README 补充防火墙和云安全组说明，明确脚本不会直接关闭防火墙
 - README 和安装提示改为更精简的公网端口说明，仅保留默认放行 22、80、443 的必要信息
 - `install.sh` 现在会校验镜像 TAG，并在 TAG 看起来像域名时直接阻止继续安装
+- 修正 TAG 域名误判逻辑，避免把 `v1.0.2` 这类合法版本号错误识别成域名
 
 ## [0.1.0] - 2026-04-20
 

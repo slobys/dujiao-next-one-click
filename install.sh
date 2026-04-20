@@ -141,7 +141,7 @@ validate_tag() {
 
 looks_like_domain() {
   local value="$1"
-  [[ "$value" =~ ^[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)+$ ]]
+  [[ "$value" =~ ^[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}$ ]]
 }
 
 collect_inputs() {
