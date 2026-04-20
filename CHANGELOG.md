@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - `install.sh` 现在也会兼容 `firewalld`，自动放行 `ssh`、`http`、`https`
 - 对 `nftables` 和 `iptables` 环境改为输出明确提示，避免脚本粗暴修改已有规则
 - README 补充防火墙和云安全组说明，明确脚本不会直接关闭防火墙
+- README 和安装提示补充端口安全建议，明确公网通常只需放行 22、80、443，不建议暴露 6379、5432
 
 ## [0.1.0] - 2026-04-20
 
