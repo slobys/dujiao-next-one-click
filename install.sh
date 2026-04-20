@@ -134,6 +134,16 @@ validate_domain() {
   [[ "$domain" =~ ^[A-Za-z0-9.-]+$ ]]
 }
 
+validate_tag() {
+  local tag="$1"
+  [[ "$tag" =~ ^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$ ]]
+}
+
+looks_like_domain() {
+  local value="$1"
+  [[ "$value" =~ ^[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)+$ ]]
+}
+
 collect_inputs() {
   section "收集部署信息"
   prompt_value SHOP_DOMAIN "请输入前台域名" "shop.example.com"
@@ -145,7 +155,24 @@ collect_inputs() {
   validate_domain "$SHOP_DOMAIN" || { red "前台域名格式不合法"; exit 1; }
   validate_domain "$ADMIN_DOMAIN" || { red "后台域名格式不合法"; exit 1; }
   [[ "$SHOP_DOMAIN" != "$ADMIN_DOMAIN" ]] || { red "前后台域名不能相同"; exit 1; }
+  validate_tag "$INPUT_TAG" || { red "镜像版本 TAG 格式不合法，例如 v1.0.2 或 latest"; exit 1; }
+  if looks_like_domain "$INPUT_TAG"; then
+    red "镜像版本 TAG 看起来像域名，你可能把域名误填到 TAG 里了: ${INPUT_TAG}"
+    red "请重新运行脚本，并在 TAG 位置填写版本号，例如 v1.0.2 或 latest"
+    exit 1
+  fi
   TAG="$INPUT_TAG"
+
+  echo
+  blue "安装配置确认:"
+  echo "  前台域名: ${SHOP_DOMAIN}"
+  echo "  后台域名: ${ADMIN_DOMAIN}"
+  echo "  镜像 TAG: ${TAG}"
+  echo "  立即申请 HTTPS: ${ENABLE_HTTPS}"
+  if ! confirm_action "以上配置是否正确，继续安装？" "Y"; then
+    red "已取消，请重新运行脚本并修正输入"
+    exit 1
+  fi
 }
 
 install_base_packages() {
