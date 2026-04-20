@@ -4,47 +4,30 @@
 
 用一个脚本完成 Docker、Compose、Nginx、容器部署，以及后续升级、备份、卸载。
 
-## 项目亮点
+## 快速开始
 
-- 单脚本安装，尽量减少手工操作
-- 自动生成部署配置，避免手写出错
-- 自动配置 Nginx 反向代理
-- 自动处理常见防火墙放行逻辑（ufw / firewalld）
-- 支持可选 HTTPS
-- 自带升级、备份、卸载、菜单脚本
-- 适合整理后直接发布到 GitHub
+```bash
+git clone https://github.com/slobys/dujiao-next-one-click.git
+cd dujiao-next-one-click
+chmod +x install.sh update.sh uninstall.sh backup.sh check-updates.sh menu.sh
+sudo ./install.sh
+```
 
-## 已完成能力
+如需菜单模式：
 
-- 一键安装 Docker / Docker Compose
-- 一键安装并启用 Nginx
-- 自动创建 `/opt/dujiao-next` 目录结构
+```bash
+sudo ./menu.sh
+```
+
+## 项目特性
+
+- 一键安装 Docker / Docker Compose / Nginx
 - 自动生成 `.env`、`config/config.yml`、`docker-compose.yml`
 - 自动启动 `redis`、`postgres`、`api`、`user`、`admin`
 - 自动写入 Nginx 反向代理配置
-- 自动处理常见防火墙放行规则
-- 可选一键申请 HTTPS
-- 增加系统预检（系统、内存、磁盘、端口）
-- 提供升级、备份、卸载、菜单脚本
-
-## 目录结构
-
-```text
-dujiao-next-one-click/
-├─ install.sh
-├─ update.sh
-├─ uninstall.sh
-├─ backup.sh
-├─ check-updates.sh
-├─ menu.sh
-├─ README.md
-├─ CHANGELOG.md
-├─ RELEASE.md
-├─ LICENSE
-├─ .gitignore
-└─ docs/
-   └─ plan.md
-```
+- 支持可选 HTTPS
+- 自动处理常见防火墙放行逻辑（ufw / firewalld）
+- 提供升级、备份、卸载、版本检查、菜单脚本
 
 ## 适用环境
 
@@ -69,28 +52,40 @@ dujiao-next-one-click/
 - `80/tcp`
 - `443/tcp`
 
-## 快速开始
+## 常用命令
 
-```bash
-git clone https://github.com/slobys/dujiao-next-one-click.git
-cd dujiao-next-one-click
-chmod +x install.sh update.sh uninstall.sh backup.sh check-updates.sh menu.sh
-sudo ./install.sh
-```
-
-如需菜单模式：
-
-```bash
-sudo ./menu.sh
-```
-
-## 脚本说明
-
-### 1. 安装
+### 安装
 
 ```bash
 sudo ./install.sh
 ```
+
+### 升级
+
+```bash
+sudo ./update.sh
+sudo ./update.sh v1.0.3
+```
+
+### 备份
+
+```bash
+sudo ./backup.sh
+```
+
+### 卸载
+
+```bash
+sudo ./uninstall.sh
+```
+
+### 查看版本提示
+
+```bash
+./check-updates.sh
+```
+
+## 安装说明
 
 安装时会提示输入：
 
@@ -114,45 +109,23 @@ sudo ./install.sh
 - 不会直接关闭防火墙
 - 仍然需要你自己确认云厂商安全组 / 云防火墙已放行 `80` 和 `443`
 
-### 2. 升级
+## 目录结构
 
-```bash
-sudo ./update.sh
-```
-
-也可以直接指定版本：
-
-```bash
-sudo ./update.sh v1.0.3
-```
-
-### 3. 备份
-
-```bash
-sudo ./backup.sh
-```
-
-默认会把当前 `/opt/dujiao-next` 完整复制到：
-
-- `/opt/dujiao-next-backups/时间戳/`
-- `/opt/dujiao-next-backups/dujiao-next-backup-时间戳.tar.gz`
-
-### 4. 卸载
-
-```bash
-sudo ./uninstall.sh
-```
-
-会执行：
-
-- 停止并删除容器
-- 删除安装目录 `/opt/dujiao-next`
-- 删除 Nginx 配置 `/etc/nginx/conf.d/dujiao-next.conf`
-
-### 5. 查看版本提示
-
-```bash
-./check-updates.sh
+```text
+dujiao-next-one-click/
+├─ install.sh
+├─ update.sh
+├─ uninstall.sh
+├─ backup.sh
+├─ check-updates.sh
+├─ menu.sh
+├─ README.md
+├─ CHANGELOG.md
+├─ RELEASE.md
+├─ LICENSE
+├─ .gitignore
+└─ docs/
+   └─ plan.md
 ```
 
 ## 当前版本打磨内容
@@ -168,9 +141,7 @@ sudo ./uninstall.sh
 - 安装后元信息记录
 - 升级 / 备份 / 卸载配套脚本
 
-## 还可以继续增强的点
-
-下一轮我建议再补：
+## 后续可增强
 
 - PostgreSQL 逻辑备份
 - 健康检查等待与失败诊断
