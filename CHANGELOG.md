@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - 修正 TAG 域名误判逻辑，避免把 `v1.0.2` 这类合法版本号错误识别成域名
 - 修正安装完成后的摘要输出，在启用 HTTPS 时直接输出 `https://` 访问地址
 - 安装时会优先自动获取 Dujiao-Next 官方最新 release 作为默认 TAG，失败时回退到内置版本
+- `update.sh` 现在也会优先自动获取官方最新 release 作为默认升级目标，并在升级前展示确认信息
 
 ## [0.1.0] - 2026-04-20
 

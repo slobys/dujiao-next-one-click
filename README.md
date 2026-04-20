@@ -60,7 +60,7 @@ sudo ./menu.sh
 # 安装
 sudo ./install.sh
 
-# 升级
+# 升级（默认优先使用官方最新 release）
 sudo ./update.sh
 sudo ./update.sh v1.0.3
 
@@ -89,6 +89,8 @@ TAG 应填写版本号，例如：
 - `latest`
 
 如果你直接回车，脚本会优先使用自动检测到的最新版本。
+
+`update.sh` 也采用同样的逻辑，默认优先升级到官方最新 release。
 
 不要把域名填到 TAG 位置。
 
