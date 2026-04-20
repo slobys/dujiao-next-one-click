@@ -623,18 +623,27 @@ EOF
 }
 
 show_summary() {
+  local scheme="http"
+  if [[ "$ENABLE_HTTPS" == "y" || "$ENABLE_HTTPS" == "yes" ]]; then
+    scheme="https"
+  fi
+
   green "Dujiao-Next 部署完成"
   echo
   echo "安装目录: ${INSTALL_DIR}"
   echo "镜像版本: ${TAG}"
-  echo "前台地址: http://${SHOP_DOMAIN}"
-  echo "后台地址: http://${ADMIN_DOMAIN}"
+  echo "前台地址: ${scheme}://${SHOP_DOMAIN}"
+  echo "后台地址: ${scheme}://${ADMIN_DOMAIN}"
   echo "默认后台账号: admin"
   echo "默认后台密码: ${ADMIN_PASS}"
   echo
   yellow "首次登录后请立刻修改后台密码"
   yellow "请确认服务器安全组已放行 80 / 443"
-  yellow "如已启用 HTTPS，请改用 https 访问"
+  if [[ "$scheme" == "https" ]]; then
+    green "当前安装已按 HTTPS 输出访问地址"
+  else
+    yellow "当前输出的是 HTTP 地址，如后续启用 HTTPS，请改用 https 访问"
+  fi
 }
 
 main() {
