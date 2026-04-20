@@ -192,7 +192,7 @@ configure_firewall() {
       green "已写入 ufw 规则 22、80、443（当前 ufw 未启用，若后续启用会自动生效）"
     fi
 
-    yellow "请同时确认云厂商安全组 / 云防火墙已放行 80 和 443，通常公网只需要放行 22、80、443"
+    yellow "请同时确认云厂商安全组 / 云防火墙已放行 80 和 443"
     return
   fi
 
@@ -208,26 +208,24 @@ configure_firewall() {
       green "已写入 firewalld 永久规则 ssh、http、https（当前 firewalld 未运行）"
     fi
 
-    yellow "请同时确认云厂商安全组 / 云防火墙已放行 80 和 443，通常公网只需要放行 22、80、443"
+    yellow "请同时确认云厂商安全组 / 云防火墙已放行 80 和 443"
     return
   fi
 
   if command -v nft >/dev/null 2>&1 && systemctl is-active --quiet nftables; then
     yellow "检测到 nftables 在运行，脚本暂不自动改 nft 规则，请手动放行 22、80、443"
     yellow "示例: nft add rule inet filter input tcp dport {22,80,443} accept"
-    yellow "同时请确认云厂商安全组 / 云防火墙已放行 80 和 443，通常公网只需要放行 22、80、443"
-    yellow "不建议暴露 6379、5432，8080、8081、8082 默认仅供本机 Nginx 使用"
+    yellow "同时请确认云厂商安全组 / 云防火墙已放行 80 和 443"
     return
   fi
 
   if command -v iptables >/dev/null 2>&1; then
     yellow "检测到 iptables 环境，脚本暂不直接改现有 iptables 规则，以免误伤已有策略"
     yellow "请手动放行 22、80、443，并确认云厂商安全组 / 云防火墙已放行 80 和 443"
-    yellow "不建议暴露 6379、5432，8080、8081、8082 默认仅供本机 Nginx 使用"
     return
   fi
 
-  yellow "未检测到受支持的主机防火墙工具，请自行确认本机和云防火墙已放行 22、80、443，不建议暴露 6379、5432"
+  yellow "未检测到受支持的主机防火墙工具，请自行确认本机和云防火墙已放行 22、80、443"
 }
 
 create_dirs() {
