@@ -177,6 +177,28 @@ install_nginx_if_needed() {
   systemctl enable --now nginx
 }
 
+configure_firewall() {
+  section "配置防火墙规则"
+
+  if ! command -v ufw >/dev/null 2>&1; then
+    yellow "未检测到 ufw，跳过防火墙配置，请自行确认云防火墙 / 安全组已放行 80 和 443"
+    return
+  fi
+
+  ufw allow 22/tcp >/dev/null 2>&1 || true
+  ufw allow 80/tcp >/dev/null 2>&1 || true
+  ufw allow 443/tcp >/dev/null 2>&1 || true
+
+  if ufw status 2>/dev/null | grep -q "Status: active"; then
+    ufw reload >/dev/null 2>&1 || true
+    green "已为活动中的 ufw 放行 22、80、443 端口"
+  else
+    green "已写入 ufw 规则 22、80、443（当前 ufw 未启用，若后续启用会自动生效）"
+  fi
+
+  yellow "请同时确认云厂商安全组 / 云防火墙已放行 80 和 443"
+}
+
 create_dirs() {
   section "创建目录"
   mkdir -p "${INSTALL_DIR}/config" "${INSTALL_DIR}/data/uploads" "${INSTALL_DIR}/data/logs" "${INSTALL_DIR}/data/redis" "${INSTALL_DIR}/data/postgres"
@@ -571,6 +593,7 @@ main() {
   check_ports
   install_docker_if_needed
   install_nginx_if_needed
+  configure_firewall
   create_dirs
   generate_secrets
   write_env
