@@ -1,12 +1,8 @@
 # dujiao-next-one-click
 
-一个面向 **Ubuntu 22.04+ / Debian 12+** 的 **Dujiao-Next 一键安装项目**。
+面向 **Ubuntu 22.04+ / Debian 12+** 的 **Dujiao-Next 一键安装脚本**。
 
-目标不是只给一串能跑的命令，而是把 Dujiao-Next 的部署整理成一套更适合长期维护、后续升级、公开分享的脚本项目。
-
-## 一句话说明
-
-用一个脚本完成 Dujiao-Next 的基础部署，自动处理 Docker、Compose、Nginx、配置文件、容器启动，以及后续的升级、备份、卸载。
+用一个脚本完成 Docker、Compose、Nginx、容器部署，以及后续升级、备份、卸载。
 
 ## 项目亮点
 
@@ -75,8 +71,6 @@ dujiao-next-one-click/
 
 ## 快速开始
 
-如果你只是想先跑起来，直接执行：
-
 ```bash
 git clone https://github.com/slobys/dujiao-next-one-click.git
 cd dujiao-next-one-click
@@ -84,28 +78,13 @@ chmod +x install.sh update.sh uninstall.sh backup.sh check-updates.sh menu.sh
 sudo ./install.sh
 ```
 
-或者使用菜单：
+如需菜单模式：
 
 ```bash
-git clone https://github.com/slobys/dujiao-next-one-click.git
-cd dujiao-next-one-click
-chmod +x install.sh update.sh uninstall.sh backup.sh check-updates.sh menu.sh
 sudo ./menu.sh
 ```
 
 ## 脚本说明
-
-### 0. 先获取项目文件
-
-如果你的服务器上还没有这个项目目录，先执行：
-
-```bash
-git clone https://github.com/slobys/dujiao-next-one-click.git
-cd dujiao-next-one-click
-```
-
-然后再执行安装、升级、备份、卸载等脚本。
-
 
 ### 1. 安装
 
@@ -175,25 +154,6 @@ sudo ./uninstall.sh
 ```bash
 ./check-updates.sh
 ```
-
-## 仓库发布建议
-
-建议仓库名：
-
-```text
-dujiao-next-one-click
-```
-
-建议首版标签：
-
-```text
-v0.1.0
-```
-
-GitHub 发布可直接参考：
-
-- `RELEASE.md`
-- `docs/github-release-assets.md`
 
 ## 当前版本打磨内容
 
