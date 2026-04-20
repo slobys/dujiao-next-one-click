@@ -144,11 +144,23 @@ looks_like_domain() {
   [[ "$value" =~ ^[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}$ ]]
 }
 
+detect_latest_tag() {
+  local latest_tag=""
+  latest_tag="$(curl -fsSL https://api.github.com/repos/dujiao-next/dujiao-next/releases/latest 2>/dev/null | jq -r '.tag_name // empty' 2>/dev/null || true)"
+  if [[ -n "$latest_tag" ]] && validate_tag "$latest_tag"; then
+    DETECTED_TAG="$latest_tag"
+    green "已获取官方最新版本: ${DETECTED_TAG}"
+  else
+    DETECTED_TAG="$DEFAULT_TAG"
+    yellow "获取官方最新版本失败，回退到默认版本: ${DETECTED_TAG}"
+  fi
+}
+
 collect_inputs() {
   section "收集部署信息"
   prompt_value SHOP_DOMAIN "请输入前台域名" "shop.example.com"
   prompt_value ADMIN_DOMAIN "请输入后台域名" "admin.example.com"
-  prompt_value INPUT_TAG "请输入镜像版本 TAG" "$DEFAULT_TAG"
+  prompt_value INPUT_TAG "请输入镜像版本 TAG" "$DETECTED_TAG"
   prompt_value ENABLE_HTTPS "是否立即申请 HTTPS? (y/N)" "N"
   ENABLE_HTTPS="$(printf '%s' "$ENABLE_HTTPS" | tr '[:upper:]' '[:lower:]')"
 
@@ -653,7 +665,9 @@ main() {
   require_cmd curl
   require_cmd openssl
   require_cmd ss
+  require_cmd jq
   check_resources
+  detect_latest_tag
   collect_inputs
   check_ports
   install_docker_if_needed
